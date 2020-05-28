@@ -33,6 +33,7 @@ const bombTexture = PIXI.Texture.from("images/bomb.png");
 const crossbowTexture = PIXI.Texture.from("images/crossbow.png")
 
 const templeFloorTexture = PIXI.Texture.from("images/templeFloor.jpg")
+const dungeonDoorTexture = PIXI.Texture.from("images/dungeon.png")
 
 const woodTexture = PIXI.Texture.from("images/wood.png");
 const navArrowTexture = PIXI.Texture.from("images/next.png")
@@ -95,6 +96,57 @@ templeFloor.x = app.renderer.width / 2;
 templeFloor.y = app.renderer.height / 2;
 templeFloor.scale.set(0.5)
 actOne.addChild(templeFloor)
+
+const dungeonDoor = new PIXI.Sprite(dungeonDoorTexture);
+dungeonDoor.x = (app.renderer.width / 2) + 300;
+dungeonDoor.y = (app.renderer.height / 2);
+dungeonDoor.anchor.set(0.5)
+dungeonDoor.scale.set(0.2)
+
+const crossbows = []
+
+const crossbow1 = new PIXI.Sprite(crossbowTexture)
+crossbow1.x = (app.renderer.width / 2) - 200;
+crossbow1.y = (app.renderer.height / 2) - 300;
+crossbow1.anchor.set(0.5)
+crossbow1.scale.set(0.1, -0.1)
+crossbows.push(crossbow1);
+
+const crossbow2 = new PIXI.Sprite(crossbowTexture)
+crossbow2.x = (app.renderer.width / 2) - 200;
+crossbow2.y = (app.renderer.height / 2) + 300;
+crossbow2.anchor.set(0.5)
+crossbow2.scale.set(0.1)
+crossbows.push(crossbow2);
+
+const crossbow3 = new PIXI.Sprite(crossbowTexture)
+crossbow3.x = app.renderer.width / 2;
+crossbow3.y = (app.renderer.height / 2) - 300;
+crossbow3.anchor.set(0.5)
+crossbow3.scale.set(0.1, -0.1)
+crossbows.push(crossbow3);
+
+const crossbow4 = new PIXI.Sprite(crossbowTexture)
+crossbow4.x = app.renderer.width / 2;
+crossbow4.y = (app.renderer.height / 2) + 300;
+crossbow4.anchor.set(0.5)
+crossbow4.scale.set(0.1)
+crossbows.push(crossbow4);
+
+const crossbow5 = new PIXI.Sprite(crossbowTexture)
+crossbow5.x = (app.renderer.width / 2) + 200;
+crossbow5.y = (app.renderer.height / 2) - 300;
+crossbow5.anchor.set(0.5)
+crossbow5.scale.set(0.1, -0.1)
+crossbows.push(crossbow5);
+
+const crossbow6 = new PIXI.Sprite(crossbowTexture)
+crossbow6.x = (app.renderer.width / 2) + 200;
+crossbow6.y = (app.renderer.height / 2) + 300;
+crossbow6.anchor.set(0.5)
+crossbow6.scale.set(0.1)
+crossbows.push(crossbow6);
+
 
 
 // Messages
@@ -170,7 +222,12 @@ function actOneStart(){
     app.stage.removeChild(classChoicePage)
     actOne.addChild(chosenClass)
     app.stage.addChild(actOne)
-    setTimeout(() => gsap.to(chosenClass, {duration: 1, x: (app.renderer.width / 2) - 300}), 1500)
+    setTimeout(() => {
+        gsap.to(chosenClass, {duration: 1, x: (app.renderer.width / 2) - 300});
+        crossbows.forEach(crossbow => actOne.addChild(crossbow))
+        actOne.addChild(dungeonDoor)
+    }, 1500)
+    
 }
 
 
