@@ -18,78 +18,72 @@ function resize() {
     app.renderer.resize(_w, _h)
 }
 
-console.log(PIXI.utils.TextureCache);
+// Create Textures
 
-let loader = PIXI.Loader.shared;
-loader.onComplete.add(setup);
+const archerTexture = PIXI.Texture.from("images/archer.png");
+const warriorTexture = PIXI.Texture.from("images/warrior.png");
+const wizardTexture = PIXI.Texture.from("images/wizard.png");
 
-loader
-    .add("images/archer.png")
-    .add("images/cannon.png")
-    .add("images/bomb.png")
-loader.load();
+const fireballTexture = PIXI.Texture.from("images/fire.png");
+const arrowTexture = PIXI.Texture.from("images/arrows.png");
+const axeTexture = PIXI.Texture.from("images/axe.png");
 
-let archer,
-    cannonLeft,
-    cannonRight,
-    bombLeft,
-    bombRight
+const cannonTexture = PIXI.Texture.from("images/cannon.png");
+const bombTexture = PIXI.Texture.from("images/bomb.png");
+const woodTexture = PIXI.Texture.from("images/wood.png");
 
 
-function setup () {
-    let archerTexture = loader.resources["images/archer.png"].texture;
-    archer = new PIXI.Sprite(archerTexture);
-    archer.anchor.set(0.5)
-    archer.scale.set(-0.2, 0.2);
-    app.stage.addChild(archer);
+// Create Containers
 
-    let cannonTexture = loader.resources["images/cannon.png"].texture;
-    cannonLeft = new PIXI.Sprite(cannonTexture);
-    cannonLeft.x = 20;
-    cannonLeft.y = app.renderer.height;
-    cannonLeft.anchor.set(1, 1);
-    cannonLeft.scale.set(-0.2, 0.2);
-    app.stage.addChild(cannonLeft)
 
-    cannonRight = new PIXI.Sprite(cannonTexture)
-    cannonRight.x = app.renderer.width - 20;
-    cannonRight.y = app.renderer.height;
-    cannonRight.anchor.set(1, 1);
-    cannonRight.scale.set(0.2);
-    app.stage.addChild(cannonRight)
 
-    let bombTexture = loader.resources["images/bomb.png"].texture;
-    bombLeft = new PIXI.Sprite(bombTexture)
-    bombLeft.x = cannonLeft.x + 110;
-    bombLeft.y = cannonLeft.y - 90;
-    bombLeft.scale.set(0.1);
-    bombLeft.anchor.set(0.5);
-    app.stage.addChild(bombLeft)
+// Create Sprites
 
-    bombRight = new PIXI.Sprite(bombTexture)
-    bombRight.x = cannonRight.x - 110;
-    bombRight.y = cannonRight.y - 90;
-    bombRight.scale.set(0.1);
-    bombRight.anchor.set(0.5);
-    app.stage.addChild(bombRight)
+const archer = new PIXI.Sprite(archerTexture);
+archer.x = (app.renderer.width / 2) - 60;
+archer.y = app.renderer.height / 2;
+archer.anchor.set(1)
+archer.scale.set(-0.2, 0.2);
+archer.interactive = true;
+archer.on('click', archerChoose)
 
-    app.ticker.add(positionsOnResize)
+
+function archerChoose() {
+    console.log("click happens")
+    archer.y = 200
 }
 
-function positionsOnResize () {
-    archer.x = app.renderer.width / 2;
-    archer.y = app.renderer.height / 2;
+cannonLeft = new PIXI.Sprite(cannonTexture);
+cannonLeft.x = 20;
+cannonLeft.y = app.renderer.height;
+cannonLeft.anchor.set(1, 1);
+cannonLeft.scale.set(-0.2, 0.2);
 
-    cannonLeft.x = 20;
-    cannonLeft.y = app.renderer.height;
+cannonRight = new PIXI.Sprite(cannonTexture)
+cannonRight.x = app.renderer.width - 20;
+cannonRight.y = app.renderer.height;
+cannonRight.anchor.set(1, 1);
+cannonRight.scale.set(0.2);
 
-    cannonRight.x = app.renderer.width - 20;
-    cannonRight.y = app.renderer.height;
+bombLeft = new PIXI.Sprite(bombTexture)
+bombLeft.x = cannonLeft.x + 110;
+bombLeft.y = cannonLeft.y - 90;
+bombLeft.scale.set(0.1);
+bombLeft.anchor.set(0.5);
 
-    bombLeft.x = cannonLeft.x + 110;
-    bombLeft.y = cannonLeft.y - 90;
+bombRight = new PIXI.Sprite(bombTexture)
+bombRight.x = cannonRight.x - 110;
+bombRight.y = cannonRight.y - 90;
+bombRight.scale.set(0.1);
+bombRight.anchor.set(0.5);
 
-    bombRight.x = cannonRight.x - 110;
-    bombRight.y = cannonRight.y - 90;
-}
+// Message Board elements
 
+// const 
+
+
+app.stage.addChild(archer);
+
+
+const interface = document.getElementById('interface')
+const testButton = document.getElementById('test')
