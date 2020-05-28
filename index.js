@@ -3,7 +3,7 @@ const canvas = document.getElementById('mycanvas');
 const app = new PIXI.Application({
     view: canvas,
     width: window.innerWidth,
-    height: window.innerHeight - 200,
+    height: window.innerHeight - 150,
     backgroundColor: 0x000333,
     resolution: window.devicePixelRatio,
     autoDensity: true
@@ -79,30 +79,6 @@ wizard.on('click', () => {
     chooseClass(wizard)
 })
 
-const cannonLeft = new PIXI.Sprite(cannonTexture);
-cannonLeft.x = 20;
-cannonLeft.y = app.renderer.height;
-cannonLeft.anchor.set(1, 1);
-cannonLeft.scale.set(-0.2, 0.2);
-
-const cannonRight = new PIXI.Sprite(cannonTexture)
-cannonRight.x = app.renderer.width - 20;
-cannonRight.y = app.renderer.height;
-cannonRight.anchor.set(1, 1);
-cannonRight.scale.set(0.2);
-
-const bombLeft = new PIXI.Sprite(bombTexture)
-bombLeft.x = cannonLeft.x + 110;
-bombLeft.y = cannonLeft.y - 90;
-bombLeft.scale.set(0.1);
-bombLeft.anchor.set(0.5);
-
-const bombRight = new PIXI.Sprite(bombTexture)
-bombRight.x = cannonRight.x - 110;
-bombRight.y = cannonRight.y - 90;
-bombRight.scale.set(0.1);
-bombRight.anchor.set(0.5);
-
 const navArrowBack = new PIXI.Sprite(navArrowTexture)
 navArrowBack.scale.set(-0.05)
 navArrowBack.anchor.set(0.5)
@@ -112,6 +88,13 @@ const navArrowContinue = new PIXI.Sprite(navArrowTexture)
 navArrowContinue.scale.set(0.05)
 navArrowContinue.anchor.set(0.5)
 navArrowContinue.interactive = true;
+
+const templeFloor = new PIXI.Sprite(templeFloorTexture);
+templeFloor.anchor.set(0.5);
+templeFloor.x = app.renderer.width / 2;
+templeFloor.y = app.renderer.height / 2;
+templeFloor.scale.set(0.5)
+actOne.addChild(templeFloor)
 
 
 // Messages
@@ -168,6 +151,7 @@ function chooseClass(classChoice){
     classChoicePage.addChild(navArrowContinue)
         navArrowContinue.x = continueMessage.x + 20;
         navArrowContinue.y = continueMessage.y
+        navArrowContinue.on('click', actOneStart)
 
 
     if(chosenClass === archer){
@@ -183,7 +167,10 @@ function chooseClass(classChoice){
 }
 
 function actOneStart(){
-    
+    app.stage.removeChild(classChoicePage)
+    actOne.addChild(chosenClass)
+    app.stage.addChild(actOne)
+    setTimeout(() => gsap.to(chosenClass, {duration: 1, x: (app.renderer.width / 2) - 300}), 1500)
 }
 
 
