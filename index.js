@@ -21,19 +21,51 @@ function resize() {
 console.log(PIXI.utils.TextureCache);
 
 let loader = PIXI.Loader.shared;
-loader.onComplete.add(handleLoadComplete);
+loader.onComplete.add(setup);
 
-loader.add("images/archer.png");
+loader
+    .add("images/archer.png")
+    .add("images/cannon.png")
+    .add("images/bomb.png")
 loader.load();
 
-let archer;
+let archer,
+    cannonLeft,
+    cannonRight,
+    bombLeft,
+    bombRight
 
-function handleLoadComplete () {
+function setup () {
     let archerTexture = loader.resources["images/archer.png"].texture;
     archer = new PIXI.Sprite(archerTexture);
     archer.anchor.set(0.5)
     archer.scale.set(-0.2, 0.2);
-    app.stage.addChild(archer)
+    app.stage.addChild(archer);
+
+    let cannonTexture = loader.resources["images/cannon.png"].texture;
+    cannonLeft = new PIXI.Sprite(cannonTexture);
+    cannonLeft.x = 20;
+    cannonLeft.y = app.renderer.height;
+    cannonLeft.anchor.set(1, 1);
+    cannonLeft.scale.set(-0.2, 0.2);
+    app.stage.addChild(cannonLeft)
+
+    cannonRight = new PIXI.Sprite(cannonTexture)
+    cannonRight.x = app.renderer.width - 20;
+    cannonRight.y = app.renderer.height;
+    cannonRight.anchor.set(1, 1);
+    cannonRight.scale.set(0.2);
+    app.stage.addChild(cannonRight)
+
+    let bombTexture = loader.resources["images/bomb.png"].texture;
+    bombLeft = new PIXI.Sprite(bombTexture)
+    bombLeft.x = cannonLeft.x + 110;
+    bombLeft.y = cannonLeft.y - 90;
+    bombLeft.scale.set(0.1);
+    bombLeft.anchor.set(0.5);
+    app.stage.addChild(bombLeft)
+
+    bombRight
 
     app.ticker.add(archerPositionOnResize)
 }
