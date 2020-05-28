@@ -35,6 +35,7 @@ const crossbowTexture = PIXI.Texture.from("images/crossbow.png")
 const templeFloorTexture = PIXI.Texture.from("images/templeFloor.jpg")
 
 const woodTexture = PIXI.Texture.from("images/wood.png");
+const navArrowTexture = PIXI.Texture.from("images/next.png")
 
 
 // Create Containers
@@ -102,24 +103,82 @@ bombRight.y = cannonRight.y - 90;
 bombRight.scale.set(0.1);
 bombRight.anchor.set(0.5);
 
+const navArrowBack = new PIXI.Sprite(navArrowTexture)
+navArrowBack.scale.set(-0.05)
+navArrowBack.anchor.set(0.5)
+navArrowBack.interactive = true;
+
+const navArrowContinue = new PIXI.Sprite(navArrowTexture)
+navArrowContinue.scale.set(0.05)
+navArrowContinue.anchor.set(0.5)
+navArrowContinue.interactive = true;
+
+
 // Messages
 
 const messageStyle = new PIXI.TextStyle({
     fill: 'white'
 })
-const chooseClassMessage = new PIXI.Text("Choose your class", messageStyle)
+const chooseClassMessage = new PIXI.Text("Choose a class", messageStyle)
 chooseClassMessage.x = app.renderer.width / 2;
 chooseClassMessage.y = (app.renderer.height / 2) - 100;
 chooseClassMessage.anchor.set(0.5);
+
+const changeClassMessage = new PIXI.Text("choose different class", messageStyle)
+changeClassMessage.x = (app.renderer.width / 2) - 300;
+changeClassMessage.y = (app.renderer.height / 2) + 100;
+changeClassMessage.anchor.set(0, 0.5)
+
+const continueMessage = new PIXI.Text("Start your adventure", messageStyle);
+continueMessage.x = (app.renderer.width / 2) + 300;
+continueMessage.y = (app.renderer.height / 2) + 100;
+continueMessage.anchor.set(1, 0.5)
 
 
 // Scene Changes
 
 function chooseClass(classChoice){
+
     chosenClass = classChoice
+
     app.stage.removeChild(startPage)
+
     classChoicePage.addChild(chosenClass)
+    classChoicePage.addChild(chooseClassMessage)
+    classChoicePage.addChild(changeClassMessage)
+    classChoicePage.addChild(navArrowBack)
+        navArrowBack.x = changeClassMessage.x - 20;
+        navArrowBack.y = changeClassMessage.y;
+        navArrowBack.on('click', () => {
+            app.stage.removeChild(classChoicePage)
+            startPage.addChild(chosenClass)
+            startPage.addChild(chooseClassMessage)
+            chooseClassMessage.text = "Choose a class"
+            app.stage.addChild(startPage)
+            switch (chosenClass){
+                case archer:
+                    gsap.to(archer, {duration: 1, x: (app.renderer.width / 2) - 300, y: (app.renderer.height / 2) + 100})
+                case warrior:
+                    gsap.to(warrior, {duration: 1, x: app.renderer.width / 2, y: (app.renderer.height / 2) + 100})
+                case wizard:
+                    gsap.to(wizard, {duration: 1, x: (app.renderer.width / 2) + 300, y: (app.renderer.height / 2) + 100})
+            }
+        })
+    classChoicePage.addChild(continueMessage)
+    classChoicePage.addChild(navArrowContinue)
+        navArrowContinue.x = continueMessage.x + 20;
+        navArrowContinue.y = continueMessage.y
+
+
+    if(chosenClass === archer){
+        chooseClassMessage.text = "Archer"
+    } else if(chosenClass === warrior){
+        chooseClassMessage.text = "Warrior"
+    } else if(chosenClass === wizard){
+        chooseClassMessage.text = "Wizard"
+    }
     app.stage.addChild(classChoicePage)
+
     gsap.to(chosenClass, {duration: 1, x: app.renderer.width / 2, y: app.renderer.height / 2})
 }
 
