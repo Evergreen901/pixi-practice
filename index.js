@@ -35,6 +35,7 @@ let archer,
     bombLeft,
     bombRight
 
+
 function setup () {
     let archerTexture = loader.resources["images/archer.png"].texture;
     archer = new PIXI.Sprite(archerTexture);
@@ -65,12 +66,30 @@ function setup () {
     bombLeft.anchor.set(0.5);
     app.stage.addChild(bombLeft)
 
-    bombRight
+    bombRight = new PIXI.Sprite(bombTexture)
+    bombRight.x = cannonRight.x - 110;
+    bombRight.y = cannonRight.y - 90;
+    bombRight.scale.set(0.1);
+    bombRight.anchor.set(0.5);
+    app.stage.addChild(bombRight)
 
-    app.ticker.add(archerPositionOnResize)
+    app.ticker.add(positionsOnResize)
 }
 
-function archerPositionOnResize () {
-    archer.x = app.renderer.screen.width / 2;
-    archer.y = app.renderer.screen.height / 2;
+function positionsOnResize () {
+    archer.x = app.renderer.width / 2;
+    archer.y = app.renderer.height / 2;
+
+    cannonLeft.x = 20;
+    cannonLeft.y = app.renderer.height;
+
+    cannonRight.x = app.renderer.width - 20;
+    cannonRight.y = app.renderer.height;
+
+    bombLeft.x = cannonLeft.x + 110;
+    bombLeft.y = cannonLeft.y - 90;
+
+    bombRight.x = cannonRight.x - 110;
+    bombRight.y = cannonRight.y - 90;
 }
+
