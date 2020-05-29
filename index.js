@@ -18,6 +18,8 @@ function resize() {
     app.renderer.resize(_w, _h)
 }
 
+const interface = document.getElementById('interface')
+
 // Create Textures
 
 const archerTexture = PIXI.Texture.from("images/archer.png");
@@ -226,8 +228,9 @@ function actOneStart(){
         gsap.to(chosenClass, {duration: 1, x: (app.renderer.width / 2) - 300});
         crossbows.forEach(crossbow => actOne.addChild(crossbow))
         actOne.addChild(dungeonDoor)
+        document.getElementById('instructions').style.display = 'block';
+        document.getElementById('readyButton').style.display = 'block'
     }, 1500)
-    
 }
 
 
@@ -240,5 +243,5 @@ startPage.addChild(chooseClassMessage)
 app.stage.addChild(startPage);
 
 
-const interface = document.getElementById('interface')
-const testButton = document.getElementById('test')                                                                                                  
+
+                                                                                               
