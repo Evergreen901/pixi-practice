@@ -260,13 +260,35 @@ readyButton.addEventListener('click', actOneBegins)
 let num1 = Math.round(Math.random() * 10)
 let num2 = Math.round(Math.random() * 10)
 let operator = '+';
-const answer = document.createElement("input");
-answer.type = 'text';
+let equation = document.getElementById("equation");
+let answer = document.getElementById("answer");
+let num1Display = document.getElementById('num1')
+let num2Display = document.getElementById('num2')
+let operatorDisplay = document.getElementById('operator')
+let guess = document.getElementById('guess')
+let correct = document.getElementById('correct')
+let wrong = document.getElementById('wrong')
 
 function actOneBegins(){
     instructions.style.display = 'none';
     readyButton.style.display = 'none';
-    interface.innerHTML = `${num1} ${operator} ${num2} = ` 
+    num1Display.innerHTML = num1;
+    operatorDisplay.innerHTML = operator;
+    num2Display.innerHTML = num2;
+    equation.style.display = 'flex';
+}
+
+answer.addEventListener('submit', checkAnswer)
+
+function checkAnswer(e){
+    e.preventDefault()
+    console.log(guess.value)
+    console.log(num1 + num2)
+    if(num1 + num2 === parseInt(guess.value)){
+        correct.style.display = 'block'
+    } else {
+        wrong.style.display = 'block'
+    }
 }
 
 

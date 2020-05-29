@@ -7,6 +7,20 @@
         <section id="interface">
             <p id="instructions">Answer the math problems correctly to gain actions. Use your actions to move or attack. If you get hit by an arrow you'll lose a life and start over.  Get to the door on the opposite side to go to the next level.</p>
             <button id="readyButton">Ready</button>
+            <div id='actionCounter'>
+            </div>
+            <div id='equation'>
+                <span id='num1'></span>
+                <span id='operator'></span>
+                <span id='num2'></span>
+                <span>=</span>
+                <form id='answer'>
+                    <input id='guess' type='text'>
+                    <button type='submit'>submit</button>
+                </form>
+                <p id='correct'>Nice Job</p>
+                <p id='wrong'>Try Again</p>
+            </div>
         </section>
         <script src="pixi.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js"></script>

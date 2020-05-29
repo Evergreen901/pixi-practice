@@ -50,6 +50,7 @@ table {
 body{
     margin: 0;
     font-size: 62.5%;
+    color: white;
 }
 
 canvas{
@@ -81,4 +82,27 @@ canvas{
     font-size: 2rem;
     background-color: #612123;
     border: none;
+    color: white;
+}
+
+#equation{
+    display: none;
+    width: 40%;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#answer input{
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 2rem;
+}
+
+#correct{
+    display: none;
+}
+
+#wrong{
+    display: none;
 }
