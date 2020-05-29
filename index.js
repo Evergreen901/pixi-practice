@@ -5,7 +5,7 @@ const app = new PIXI.Application({
     width: window.innerWidth,
     height: window.innerHeight - 150,
     backgroundColor: 0x000333,
-    resolution: window.devicePixelRatio,
+    //resolution: window.devicePixelRatio,
     autoDensity: true
 })
 
@@ -26,6 +26,7 @@ const archerTexture = PIXI.Texture.from("images/archer.png");
 const warriorTexture = PIXI.Texture.from("images/warrior.png");
 const wizardTexture = PIXI.Texture.from("images/wizard.png");
 
+const heartTexture = PIXI.Texture.from("images/heart.png")
 const fireballTexture = PIXI.Texture.from("images/fire.png");
 const arrowTexture = PIXI.Texture.from("images/arrows.png");
 const axeTexture = PIXI.Texture.from("images/axe.png");
@@ -46,6 +47,7 @@ const navArrowTexture = PIXI.Texture.from("images/next.png")
 const startPage = new PIXI.Container();
 const classChoicePage = new PIXI.Container();
 const actOne = new PIXI.Container();
+const livesContainer = new PIXI.Container();
 
 
 // Create Sprites
@@ -98,6 +100,21 @@ templeFloor.x = app.renderer.width / 2;
 templeFloor.y = app.renderer.height / 2;
 templeFloor.scale.set(0.5)
 actOne.addChild(templeFloor)
+
+let livesCount = 3;
+let hearts = []
+
+for(let i = 0; i < livesCount; i++){
+    let heart = new PIXI.Sprite(heartTexture);
+    heart.scale.set(0.1)
+    heart.x = 100 * i;
+    heart.y = 100;
+
+    livesContainer.addChild(heart)
+    hearts.push(heart)
+}
+
+
 
 const dungeonDoor = new PIXI.Sprite(dungeonDoorTexture);
 dungeonDoor.x = (app.renderer.width / 2) + 300;
@@ -220,6 +237,9 @@ function chooseClass(classChoice){
     gsap.to(chosenClass, {duration: 1, x: app.renderer.width / 2, y: app.renderer.height / 2})
 }
 
+const instructions = document.getElementById('instructions');
+const readyButton = document.getElementById('readyButton')
+
 function actOneStart(){
     app.stage.removeChild(classChoicePage)
     actOne.addChild(chosenClass)
@@ -227,10 +247,26 @@ function actOneStart(){
     setTimeout(() => {
         gsap.to(chosenClass, {duration: 1, x: (app.renderer.width / 2) - 300});
         crossbows.forEach(crossbow => actOne.addChild(crossbow))
-        actOne.addChild(dungeonDoor)
-        document.getElementById('instructions').style.display = 'block';
-        document.getElementById('readyButton').style.display = 'block'
+        actOne.addChild(dungeonDoor);
+        actOne.addChild(livesContainer);
+            livesContainer.x = 100;
+        instructions.style.display = 'block';
+        readyButton.style.display = 'block'
     }, 1500)
+}
+
+readyButton.addEventListener('click', actOneBegins)
+
+let num1 = Math.round(Math.random() * 10)
+let num2 = Math.round(Math.random() * 10)
+let operator = '+';
+const answer = document.createElement("input");
+answer.type = 'text';
+
+function actOneBegins(){
+    instructions.style.display = 'none';
+    readyButton.style.display = 'none';
+    interface.innerHTML = `${num1} ${operator} ${num2} = ` 
 }
 
 
