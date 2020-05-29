@@ -85,6 +85,10 @@ canvas{
     color: white;
 }
 
+#actionCounter{
+    display: none;
+}
+
 #equation{
     display: none;
     width: 40%;

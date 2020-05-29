@@ -269,13 +269,20 @@ let guess = document.getElementById('guess')
 let correct = document.getElementById('correct')
 let wrong = document.getElementById('wrong')
 
+let actions = 0;
+const actionCounter = document.getElementById('actionCounter')
+
+
 function actOneBegins(){
     instructions.style.display = 'none';
     readyButton.style.display = 'none';
     num1Display.innerHTML = num1;
     operatorDisplay.innerHTML = operator;
     num2Display.innerHTML = num2;
+    interface.style.flexDirection = 'row';
+    interface.style.justifyContent = 'space-around';
     equation.style.display = 'flex';
+    actionCounter.style.display = 'block';
 }
 
 answer.addEventListener('submit', checkAnswer)
@@ -285,7 +292,14 @@ function checkAnswer(e){
     console.log(guess.value)
     console.log(num1 + num2)
     if(num1 + num2 === parseInt(guess.value)){
-        correct.style.display = 'block'
+        correct.style.display = 'block';
+        actions += 1;
+        actionCounter.innerHTML = `You have ${actions} actions`
+        num1 = Math.round(Math.random() * 10);
+        num1Display.innerHTML = num1;
+        num2 = Math.round(Math.random() * 10);
+        num2Display.innerHTML = num2;
+        e.target.reset()
     } else {
         wrong.style.display = 'block'
     }
