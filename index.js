@@ -152,6 +152,16 @@ actOne.addChild(templeFloor)
 let livesCount = 3;
 let hearts = []
 
+for(let i = 0; i < livesCount; i++){
+    let heart = new PIXI.Sprite(heartTexture);
+    heart.scale.set(0.1)
+    heart.x = 100 * i;
+    heart.y = 100;
+
+    livesContainer.addChild(heart)
+    hearts.push(heart)
+}
+
 const dungeonDoor = new PIXI.Sprite(dungeonDoorTexture);
 dungeonDoor.x = (app.renderer.width / 2) + 300;
 dungeonDoor.y = (app.renderer.height / 2);
@@ -312,26 +322,14 @@ function actOneStart(){
     actOne.addChild(chosenClass)
     actOne.addChild(needMoreActions)
     app.stage.addChild(actOne)
-    app.stage.removeChild(livesContainer)
-    console.log(livesCount)
 
-    
+    livesContainer.removeChild(hearts[livesCount])
 
     setTimeout(() => {
-
-        for(let i = 0; i < livesCount; i++){
-            let heart = new PIXI.Sprite(heartTexture);
-            heart.scale.set(0.1)
-            heart.x = 100 * i;
-            heart.y = 100;
-        
-            livesContainer.addChild(heart)
-            hearts.push(heart)
-        }
-
         gsap.to(chosenClass, {duration: 1, x: (app.renderer.width / 2) - 300, rotation: 0});
         crossbows.forEach(crossbow => actOne.addChild(crossbow))
         actOne.addChild(dungeonDoor);
+
         actOne.addChild(livesContainer);
             livesContainer.x = 100;
         instructions.style.display = 'block';
@@ -356,6 +354,9 @@ let wrong = document.getElementById('wrong')
 let actions = 0;
 const actionCounter = document.getElementById('actionCounter')
 
+let arrow1Interval,
+    arrow3Interval,
+    arrow5Interval
 
 function actOneBegins(){
     instructions.style.display = 'none';
@@ -382,17 +383,16 @@ function actOneBegins(){
         actionsContainer.addChild(castFireball);
     }
 
-    setInterval(fireCrossbow1, 5000)
-    setInterval(fireCrossbow3, 6000)
-    setInterval(fireCrossbow5, 4000)
+    arrow1Interval = setInterval(fireCrossbow1, 5000)
+    arrow3Interval = setInterval(fireCrossbow3, 6000)
+    arrow5Interval = setInterval(fireCrossbow5, 4000)
 }
 
 answer.addEventListener('submit', checkAnswer)
 
 function checkAnswer(e){
     e.preventDefault()
-    console.log(guess.value)
-    console.log(num1 + num2)
+
     if(num1 + num2 === parseInt(guess.value)){
         correct.style.display = 'block';
         actions += 1;
@@ -435,20 +435,44 @@ function backAction() {
 function fireCrossbow1(){
     app.stage.addChild(arrowCBow1)
     if(arrowCBow1.x === chosenClass.x){
-        clearInterval();
+        clearInterval(arrow1Interval);
+        clearInterval(arrow3Interval);
+        clearInterval(arrow5Interval);
+    
 
         gsap.to(arrowCBow1, {duration: 0.5, y: chosenClass.y})
-        chosenClass.rotation = -1;
 
-        livesCount -= 1;
-        livesContainer.removeChild(hearts[hearts.length - 1])
-        hearts.pop(hearts[hearts.length - 1])
+        if(livesCount < 1){
+            actionCounter.style.display = 'none';
+            equation.style.display = 'none';
+            interface.innerHTML = "OH NO! Better luck next time";
 
-        actionCounter.style.display = 'none';
-        equation.style.display = 'none';
-        interface.style.flexDirection = 'column';
-        interface.style.justifyContent = 'space-between'
-        actOneStart();
+            app.stage.removeChild(arrowCBow1)
+            app.stage.removeChild(arrowCBow3)
+            app.stage.removeChild(arrowCBow5)
+
+            app.stage.removeChild(actOne);
+            app.stage.removeChild(actionsContainer);
+
+            app.stage.addChild(chosenClass)
+
+            gsap.to(chosenClass, {duration: 1, x: app.renderer.width / 2, y: app.renderer.height / 2, rotation: -1.7})
+        } else {
+        setTimeout(() => {
+            chosenClass.rotation = -1;
+
+            livesCount -= 1;
+
+            arrowCBow1.y = crossbow1.y
+            app.stage.removeChild(arrowCBow1)
+
+            actionCounter.style.display = 'none';
+            equation.style.display = 'none';
+            interface.style.flexDirection = 'column';
+            interface.style.justifyContent = 'space-between'
+            actOneStart();
+        }, 500)
+    }
     } else {
         gsap.to(arrowCBow1, {duration: 0.5, y: arrowCBow1.y + 600})
         setTimeout(() => {
@@ -462,13 +486,44 @@ function fireCrossbow1(){
 function fireCrossbow3(){
     app.stage.addChild(arrowCBow3)
     if(arrowCBow3.x === chosenClass.x){
-        gsap.to(arrowCBow3, {duration: 0.5, y: chosenClass.y})
-        chosenClass.rotation = -1;
-        livesCount -= 1;
-        actionCounter.style.display = 'none';
-        equation.style.display = 'none';
+        clearInterval(arrow1Interval);
+        clearInterval(arrow3Interval);
+        clearInterval(arrow5Interval);
+    
 
-        actOneStart();
+        gsap.to(arrowCBow3, {duration: 0.5, y: chosenClass.y})
+
+        if(livesCount < 1){
+            actionCounter.style.display = 'none';
+            equation.style.display = 'none';
+            interface.innerHTML = "OH NO! Better luck next time";
+
+            app.stage.removeChild(arrowCBow1)
+            app.stage.removeChild(arrowCBow3)
+            app.stage.removeChild(arrowCBow5)
+
+            app.stage.removeChild(actOne);
+            app.stage.removeChild(actionsContainer);
+
+            app.stage.addChild(chosenClass)
+
+            gsap.to(chosenClass, {duration: 1, x: app.renderer.width / 2, y: app.renderer.height / 2, rotation: -1.7})
+        } else {
+        setTimeout(() => {
+            chosenClass.rotation = -1;
+
+            livesCount -= 1;
+
+            arrowCBow3.y = crossbow1.y
+            app.stage.removeChild(arrowCBow3)
+
+            actionCounter.style.display = 'none';
+            equation.style.display = 'none';
+            interface.style.flexDirection = 'column';
+            interface.style.justifyContent = 'space-between'
+            actOneStart();
+        }, 500)
+        }
     } else {
         gsap.to(arrowCBow3, {duration: 0.5, y: arrowCBow3.y + 600})
         setTimeout(() => {
@@ -481,13 +536,46 @@ function fireCrossbow3(){
 function fireCrossbow5(){
     app.stage.addChild(arrowCBow5)
     if(arrowCBow5.x === chosenClass.x){
-        gsap.to(arrowCBow5, {duration: 0.5, y: chosenClass.y})
-        chosenClass.rotation = -1;
+        clearInterval(arrow1Interval);
+        clearInterval(arrow3Interval);
+        clearInterval(arrow5Interval);
+    
 
-        livesCount -= 1;
-        actionCounter.style.display = 'none';
-        equation.style.display = 'none';
-        actOneStart();
+        gsap.to(arrowCBow5, {duration: 0.5, y: chosenClass.y})
+
+        if(livesCount < 1){
+            actionCounter.style.display = 'none';
+            equation.style.display = 'none';
+            interface.innerHTML = "OH NO! Better luck next time";
+
+            app.stage.removeChild(arrowCBow1)
+            app.stage.removeChild(arrowCBow3)
+            app.stage.removeChild(arrowCBow5)
+
+            app.stage.removeChild(actOne);
+            app.stage.removeChild(actionsContainer);
+
+            app.stage.addChild(chosenClass)
+
+            gsap.to(chosenClass, {duration: 1, x: app.renderer.width / 2, y: app.renderer.height / 2, rotation: -1.7})
+        } else {
+            setTimeout(() => {
+            chosenClass.rotation = -1;
+
+            livesCount -= 1;
+
+            arrowCBow5.y = crossbow1.y
+            app.stage.removeChild(arrowCBow5)
+
+            actionCounter.style.display = 'none';
+            equation.style.display = 'none';
+            interface.style.flexDirection = 'column';
+            interface.style.justifyContent = 'space-between'
+            actOneStart();
+        }, 500)
+    }
+
+        
     } else {
         gsap.to(arrowCBow5, {duration: 0.5, y: arrowCBow5.y + 600})
         setTimeout(() => {
