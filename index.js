@@ -28,6 +28,7 @@ const wizardTexture = PIXI.Texture.from("images/wizard.png");
 
 const heartTexture = PIXI.Texture.from("images/heart.png")
 const fireballTexture = PIXI.Texture.from("images/fire.png");
+const archerArrowTexture = PIXI.Texture.from("images/diagonal-arrow.png")
 const arrowTexture = PIXI.Texture.from("images/arrows.png");
 const axeTexture = PIXI.Texture.from("images/axe.png");
 const moveTexture = PIXI.Texture.from("images/back.png")
@@ -49,6 +50,7 @@ const startPage = new PIXI.Container();
 const classChoicePage = new PIXI.Container();
 const actOne = new PIXI.Container();
 const livesContainer = new PIXI.Container();
+const actionsContainer = new PIXI.Container()
 
 
 // Create Sprites
@@ -86,27 +88,39 @@ wizard.on('click', () => {
 })
 
 const moveBack = new PIXI.Sprite(moveTexture);
-moveBack.scale.set(0.2)
+moveBack.x = 50;
+moveBack.y = 150;
+moveBack.scale.set(0.1)
+moveBack.anchor.set(0.5)
 moveBack.interactive = true;
 moveBack.buttonMode = true;
 
 const moveForward = new PIXI.Sprite(moveTexture);
-moveForward.scale.set(-0.2)
+moveForward.x = 50;
+moveForward.y = 75;
+moveForward.scale.set(-0.1)
+moveForward.anchor.set(0.5)
 moveForward.interactive = true;
 moveForward.buttonMode = true;
 
-const fireArrow = new PIXI.Sprite(arrowTexture)
-fireArrow.scale.set(0.2)
+const fireArrow = new PIXI.Sprite(archerArrowTexture)
+fireArrow.x = 50;
+fireArrow.scale.set(0.1);
+fireArrow.anchor.set(0.5);
 fireArrow.interactive = true;
 fireArrow.buttonMode = true;
 
-const throwAxe = new PIXI.Sprite(axeTexture)
-throwAxe.scale.set(0.2);
+const throwAxe = new PIXI.Sprite(axeTexture);
+throwAxe.x = 50;
+throwAxe.scale.set(0.1);
+throwAxe.anchor.set(0.5);
 throwAxe.interactive = true;
 throwAxe.buttonMode = true;
 
-const castFireball = new PIXI.Sprite(fireballTexture)
-castFireball.scale.set(0.2);
+const castFireball = new PIXI.Sprite(fireballTexture);
+castFireball.x = 50;
+castFireball.scale.set(0.1);
+castFireball.anchor.set(0.5);
 castFireball.interactive = true;
 castFireball.buttonMode = true;
 
@@ -312,6 +326,18 @@ function actOneBegins(){
     interface.style.justifyContent = 'space-around';
     equation.style.display = 'flex';
     actionCounter.style.display = 'block';
+    app.stage.addChild(actionsContainer);
+    actionsContainer.x = 25;
+    actionsContainer.y = app.renderer.height / 2;
+    actionsContainer.addChild(moveForward);
+    actionsContainer.addChild(moveBack);
+    if(chosenClass === archer){
+        actionsContainer.addChild(fireArrow);
+    } else if(chosenClass === warrior){
+        actionsContainer.addChild(throwAxe);
+    } else if(chosenClass === wizard){
+        actionsContainer.addChild(castFireball);
+    }
 }
 
 answer.addEventListener('submit', checkAnswer)
