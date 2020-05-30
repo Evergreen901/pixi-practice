@@ -30,6 +30,7 @@ const heartTexture = PIXI.Texture.from("images/heart.png")
 const fireballTexture = PIXI.Texture.from("images/fire.png");
 const arrowTexture = PIXI.Texture.from("images/arrows.png");
 const axeTexture = PIXI.Texture.from("images/axe.png");
+const moveTexture = PIXI.Texture.from("images/back.png")
 
 const cannonTexture = PIXI.Texture.from("images/cannon.png");
 const bombTexture = PIXI.Texture.from("images/bomb.png");
@@ -84,15 +85,43 @@ wizard.on('click', () => {
     chooseClass(wizard)
 })
 
+const moveBack = new PIXI.Sprite(moveTexture);
+moveBack.scale.set(0.2)
+moveBack.interactive = true;
+moveBack.buttonMode = true;
+
+const moveForward = new PIXI.Sprite(moveTexture);
+moveForward.scale.set(-0.2)
+moveForward.interactive = true;
+moveForward.buttonMode = true;
+
+const fireArrow = new PIXI.Sprite(arrowTexture)
+fireArrow.scale.set(0.2)
+fireArrow.interactive = true;
+fireArrow.buttonMode = true;
+
+const throwAxe = new PIXI.Sprite(axeTexture)
+throwAxe.scale.set(0.2);
+throwAxe.interactive = true;
+throwAxe.buttonMode = true;
+
+const castFireball = new PIXI.Sprite(fireballTexture)
+castFireball.scale.set(0.2);
+castFireball.interactive = true;
+castFireball.buttonMode = true;
+
+
 const navArrowBack = new PIXI.Sprite(navArrowTexture)
 navArrowBack.scale.set(-0.05)
 navArrowBack.anchor.set(0.5)
 navArrowBack.interactive = true;
+navArrowBack.buttonMode = true;
 
 const navArrowContinue = new PIXI.Sprite(navArrowTexture)
 navArrowContinue.scale.set(0.05)
 navArrowContinue.anchor.set(0.5)
 navArrowContinue.interactive = true;
+navArrowContinue.buttonMode = true;
 
 const templeFloor = new PIXI.Sprite(templeFloorTexture);
 templeFloor.anchor.set(0.5);
