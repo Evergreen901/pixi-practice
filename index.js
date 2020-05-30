@@ -94,6 +94,7 @@ moveBack.scale.set(0.1)
 moveBack.anchor.set(0.5)
 moveBack.interactive = true;
 moveBack.buttonMode = true;
+moveBack.on('click', backAction)
 
 const moveForward = new PIXI.Sprite(moveTexture);
 moveForward.x = 50;
@@ -102,6 +103,7 @@ moveForward.scale.set(-0.1)
 moveForward.anchor.set(0.5)
 moveForward.interactive = true;
 moveForward.buttonMode = true;
+moveForward.on('click', forwardAction)
 
 const fireArrow = new PIXI.Sprite(archerArrowTexture)
 fireArrow.x = 50;
@@ -349,7 +351,7 @@ function checkAnswer(e){
     if(num1 + num2 === parseInt(guess.value)){
         correct.style.display = 'block';
         actions += 1;
-        actionCounter.innerHTML = `You have ${actions} actions`
+        actionCounter.innerHTML = `Actions: ${actions}`
         num1 = Math.round(Math.random() * 10);
         num1Display.innerHTML = num1;
         num2 = Math.round(Math.random() * 10);
@@ -360,6 +362,17 @@ function checkAnswer(e){
     }
 }
 
+function forwardAction() {
+    chosenClass.x += 100;
+    actions -= 1;
+    actionCounter.innerHTML = `Actions: ${actions}`
+}
+
+function backAction() {
+    chosenClass.x -= 100;
+    actions -= 1;
+    actionCounter.innerHTML = `Actions: ${actions}`
+}
 
 // Start stage
 startPage.addChild(archer)
