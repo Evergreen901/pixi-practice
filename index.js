@@ -259,6 +259,11 @@ continueMessage.x = (app.renderer.width / 2) + 300;
 continueMessage.y = (app.renderer.height / 2) + 100;
 continueMessage.anchor.set(1, 0.5)
 
+const needMoreActions = new PIXI.Text("Gain actions first", messageStyle);
+needMoreActions.x = (app.renderer.width / 2) - 500;
+needMoreActions.y = (app.renderer.height - 100);
+needMoreActions.visible = false;
+
 
 // Scene Changes
 
@@ -317,6 +322,7 @@ const readyButton = document.getElementById('readyButton')
 function actOneStart(){
     app.stage.removeChild(classChoicePage)
     actOne.addChild(chosenClass)
+    actOne.addChild(needMoreActions)
     app.stage.addChild(actOne)
     setTimeout(() => {
         gsap.to(chosenClass, {duration: 1, x: (app.renderer.width / 2) - 300});
@@ -398,15 +404,26 @@ function checkAnswer(e){
 }
 
 function forwardAction() {
-    chosenClass.x += 100;
-    actions -= 1;
-    actionCounter.innerHTML = `Actions: ${actions}`
+    if(actions > 0){
+        chosenClass.x += 100;
+        actions -= 1;
+        actionCounter.innerHTML = `Actions: ${actions}`
+    } else {
+        needMoreActions.visible = true;
+        setTimeout(() => needMoreActions.visible = false, 1000)
+    }
+    
 }
 
 function backAction() {
-    chosenClass.x -= 100;
-    actions -= 1;
-    actionCounter.innerHTML = `Actions: ${actions}`
+    if(actions > 0){
+        chosenClass.x -= 100;
+        actions -= 1;
+        actionCounter.innerHTML = `Actions: ${actions}`
+    } else {
+        needMoreActions.visible = true;
+        setTimeout(() => needMoreActions.visible = false, 1000)
+    }
 }
 
 
