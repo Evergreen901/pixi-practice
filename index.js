@@ -152,18 +152,6 @@ actOne.addChild(templeFloor)
 let livesCount = 3;
 let hearts = []
 
-for(let i = 0; i < livesCount; i++){
-    let heart = new PIXI.Sprite(heartTexture);
-    heart.scale.set(0.1)
-    heart.x = 100 * i;
-    heart.y = 100;
-
-    livesContainer.addChild(heart)
-    hearts.push(heart)
-}
-
-
-
 const dungeonDoor = new PIXI.Sprite(dungeonDoorTexture);
 dungeonDoor.x = (app.renderer.width / 2) + 300;
 dungeonDoor.y = (app.renderer.height / 2);
@@ -324,8 +312,24 @@ function actOneStart(){
     actOne.addChild(chosenClass)
     actOne.addChild(needMoreActions)
     app.stage.addChild(actOne)
+    app.stage.removeChild(livesContainer)
+    console.log(livesCount)
+
+    
+
     setTimeout(() => {
-        gsap.to(chosenClass, {duration: 1, x: (app.renderer.width / 2) - 300});
+
+        for(let i = 0; i < livesCount; i++){
+            let heart = new PIXI.Sprite(heartTexture);
+            heart.scale.set(0.1)
+            heart.x = 100 * i;
+            heart.y = 100;
+        
+            livesContainer.addChild(heart)
+            hearts.push(heart)
+        }
+
+        gsap.to(chosenClass, {duration: 1, x: (app.renderer.width / 2) - 300, rotation: 0});
         crossbows.forEach(crossbow => actOne.addChild(crossbow))
         actOne.addChild(dungeonDoor);
         actOne.addChild(livesContainer);
@@ -430,29 +434,67 @@ function backAction() {
 
 function fireCrossbow1(){
     app.stage.addChild(arrowCBow1)
-    gsap.to(arrowCBow1, {duration: 0.5, y: arrowCBow1.y + 600})
-    setTimeout(() => {
-        arrowCBow1.y = crossbow1.y
-        app.stage.removeChild(arrowCBow1)
-    }, 500)
+    if(arrowCBow1.x === chosenClass.x){
+        clearInterval();
+
+        gsap.to(arrowCBow1, {duration: 0.5, y: chosenClass.y})
+        chosenClass.rotation = -1;
+
+        livesCount -= 1;
+        livesContainer.removeChild(hearts[hearts.length - 1])
+        hearts.pop(hearts[hearts.length - 1])
+
+        actionCounter.style.display = 'none';
+        equation.style.display = 'none';
+        interface.style.flexDirection = 'column';
+        interface.style.justifyContent = 'space-between'
+        actOneStart();
+    } else {
+        gsap.to(arrowCBow1, {duration: 0.5, y: arrowCBow1.y + 600})
+        setTimeout(() => {
+            arrowCBow1.y = crossbow1.y
+            app.stage.removeChild(arrowCBow1)
+        }, 500)
+    }
+    
 }
 
 function fireCrossbow3(){
     app.stage.addChild(arrowCBow3)
-    gsap.to(arrowCBow3, {duration: 0.5, y: arrowCBow3.y + 600})
-    setTimeout(() => {
-        arrowCBow3.y = crossbow3.y
-        app.stage.removeChild(arrowCBow3)
+    if(arrowCBow3.x === chosenClass.x){
+        gsap.to(arrowCBow3, {duration: 0.5, y: chosenClass.y})
+        chosenClass.rotation = -1;
+        livesCount -= 1;
+        actionCounter.style.display = 'none';
+        equation.style.display = 'none';
+
+        actOneStart();
+    } else {
+        gsap.to(arrowCBow3, {duration: 0.5, y: arrowCBow3.y + 600})
+        setTimeout(() => {
+            arrowCBow3.y = crossbow1.y
+            app.stage.removeChild(arrowCBow3)
         }, 500)
+    }
 }
 
 function fireCrossbow5(){
     app.stage.addChild(arrowCBow5)
-    gsap.to(arrowCBow5, {duration: 0.5, y: arrowCBow5.y + 600})
-    setTimeout(() => {
-        arrowCBow5.y = crossbow5.y;
-        app.stage.removeChild(arrowCBow5)
-    }, 500)
+    if(arrowCBow5.x === chosenClass.x){
+        gsap.to(arrowCBow5, {duration: 0.5, y: chosenClass.y})
+        chosenClass.rotation = -1;
+
+        livesCount -= 1;
+        actionCounter.style.display = 'none';
+        equation.style.display = 'none';
+        actOneStart();
+    } else {
+        gsap.to(arrowCBow5, {duration: 0.5, y: arrowCBow5.y + 600})
+        setTimeout(() => {
+            arrowCBow5.y = crossbow1.y
+            app.stage.removeChild(arrowCBow5)
+        }, 500)
+    }
 }
 
 // Start stage
