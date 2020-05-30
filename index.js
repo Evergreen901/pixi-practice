@@ -63,6 +63,7 @@ archer.y = (app.renderer.height / 2) + 100;
 archer.anchor.set(0.5)
 archer.scale.set(-0.2, 0.2);
 archer.interactive = true;
+archer.buttonMode = true;
 archer.on('click', () => {
     chooseClass(archer)
 })
@@ -73,6 +74,7 @@ warrior.y = (app.renderer.height / 2) + 100;
 warrior.anchor.set(0.5);
 warrior.scale.set(-0.2, 0.2);
 warrior.interactive = true;
+warrior.buttonMode = true;
 warrior.on('click', () => {
     chooseClass(warrior)
 })
@@ -83,6 +85,7 @@ wizard.y = (app.renderer.height / 2) + 100;
 wizard.anchor.set(0.5);
 wizard.scale.set(-0.2, 0.2);
 wizard.interactive = true;
+wizard.buttonMode = true;
 wizard.on('click', () => {
     chooseClass(wizard)
 })
@@ -176,11 +179,13 @@ crossbow1.anchor.set(0.5)
 crossbow1.scale.set(0.1, -0.1)
 crossbows.push(crossbow1);
 
+
 const crossbow2 = new PIXI.Sprite(crossbowTexture)
 crossbow2.x = (app.renderer.width / 2) - 200;
 crossbow2.y = (app.renderer.height / 2) + 300;
 crossbow2.anchor.set(0.5)
-crossbow2.scale.set(0.1)
+crossbow2.scale.set(0.1);
+crossbow2.visible = false;
 crossbows.push(crossbow2);
 
 const crossbow3 = new PIXI.Sprite(crossbowTexture)
@@ -194,7 +199,8 @@ const crossbow4 = new PIXI.Sprite(crossbowTexture)
 crossbow4.x = app.renderer.width / 2;
 crossbow4.y = (app.renderer.height / 2) + 300;
 crossbow4.anchor.set(0.5)
-crossbow4.scale.set(0.1)
+crossbow4.scale.set(0.1);
+crossbow4.visible = false;
 crossbows.push(crossbow4);
 
 const crossbow5 = new PIXI.Sprite(crossbowTexture)
@@ -208,10 +214,30 @@ const crossbow6 = new PIXI.Sprite(crossbowTexture)
 crossbow6.x = (app.renderer.width / 2) + 200;
 crossbow6.y = (app.renderer.height / 2) + 300;
 crossbow6.anchor.set(0.5)
-crossbow6.scale.set(0.1)
+crossbow6.scale.set(0.1);
+crossbow6.visible = false;
 crossbows.push(crossbow6);
 
+const arrowCBow1 = new PIXI.Sprite(arrowTexture)
+arrowCBow1.scale.set(-0.1);
+arrowCBow1.anchor.set(0.5);
+arrowCBow1.rotation = -0.8;
+arrowCBow1.x = crossbow1.x;
+arrowCBow1.y = crossbow1.y;
 
+const arrowCBow3 = new PIXI.Sprite(arrowTexture);
+arrowCBow3.scale.set(-0.1);
+arrowCBow3.anchor.set(0.5);
+arrowCBow3.rotation = -0.8;
+arrowCBow3.x = crossbow3.x;
+arrowCBow3.y = crossbow3.y;
+
+const arrowCBow5 = new PIXI.Sprite(arrowTexture);
+arrowCBow5.scale.set(-0.1);
+arrowCBow5.anchor.set(0.5);
+arrowCBow5.rotation = -0.8;
+arrowCBow5.x = crossbow5.x;
+arrowCBow5.y = crossbow5.y;
 
 // Messages
 
@@ -279,6 +305,9 @@ function chooseClass(classChoice){
     }
     app.stage.addChild(classChoicePage)
 
+    chosenClass.interactive = false;
+    chosenClass.buttonMode = false;
+
     gsap.to(chosenClass, {duration: 1, x: app.renderer.width / 2, y: app.renderer.height / 2})
 }
 
@@ -328,9 +357,11 @@ function actOneBegins(){
     interface.style.justifyContent = 'space-around';
     equation.style.display = 'flex';
     actionCounter.style.display = 'block';
+
     app.stage.addChild(actionsContainer);
-    actionsContainer.x = 25;
-    actionsContainer.y = app.renderer.height / 2;
+    actionsContainer.x = 50;
+    actionsContainer.y = (app.renderer.height / 2) - 75;
+
     actionsContainer.addChild(moveForward);
     actionsContainer.addChild(moveBack);
     if(chosenClass === archer){
@@ -340,6 +371,10 @@ function actOneBegins(){
     } else if(chosenClass === wizard){
         actionsContainer.addChild(castFireball);
     }
+
+    setInterval(fireCrossbow1, 5000)
+    setInterval(fireCrossbow3, 6000)
+    setInterval(fireCrossbow5, 4000)
 }
 
 answer.addEventListener('submit', checkAnswer)
@@ -372,6 +407,35 @@ function backAction() {
     chosenClass.x -= 100;
     actions -= 1;
     actionCounter.innerHTML = `Actions: ${actions}`
+}
+
+
+
+function fireCrossbow1(){
+    app.stage.addChild(arrowCBow1)
+    gsap.to(arrowCBow1, {duration: 0.5, y: arrowCBow1.y + 600})
+    setTimeout(() => {
+        arrowCBow1.y = crossbow1.y
+        app.stage.removeChild(arrowCBow1)
+    }, 500)
+}
+
+function fireCrossbow3(){
+    app.stage.addChild(arrowCBow3)
+    gsap.to(arrowCBow3, {duration: 0.5, y: arrowCBow3.y + 600})
+    setTimeout(() => {
+        arrowCBow3.y = crossbow3.y
+        app.stage.removeChild(arrowCBow3)
+        }, 500)
+}
+
+function fireCrossbow5(){
+    app.stage.addChild(arrowCBow5)
+    gsap.to(arrowCBow5, {duration: 0.5, y: arrowCBow5.y + 600})
+    setTimeout(() => {
+        arrowCBow5.y = crossbow5.y;
+        app.stage.removeChild(arrowCBow5)
+    }, 500)
 }
 
 // Start stage
