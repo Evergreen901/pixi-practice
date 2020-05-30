@@ -39,6 +39,7 @@ const crossbowTexture = PIXI.Texture.from("images/crossbow.png")
 
 const templeFloorTexture = PIXI.Texture.from("images/templeFloor.jpg")
 const dungeonDoorTexture = PIXI.Texture.from("images/dungeon.png")
+const gravestoneTexture = PIXI.Texture.from("images/death.png");
 
 const woodTexture = PIXI.Texture.from("images/wood.png");
 const navArrowTexture = PIXI.Texture.from("images/next.png")
@@ -237,6 +238,11 @@ arrowCBow5.rotation = -0.8;
 arrowCBow5.x = crossbow5.x;
 arrowCBow5.y = crossbow5.y;
 
+const gravestone = new PIXI.Sprite(gravestoneTexture)
+gravestone.x = app.renderer.width / 2;
+gravestone.y = app.renderer.height / 2;
+gravestone.anchor.set(0.5);
+
 // Messages
 
 const messageStyle = new PIXI.TextStyle({
@@ -395,6 +401,7 @@ function checkAnswer(e){
 
     if(num1 + num2 === parseInt(guess.value)){
         correct.style.display = 'block';
+        setTimeout(() => correct.style.display = 'none', 1000)
         actions += 1;
         actionCounter.innerHTML = `Actions: ${actions}`
         num1 = Math.round(Math.random() * 10);
@@ -404,6 +411,7 @@ function checkAnswer(e){
         e.target.reset()
     } else {
         wrong.style.display = 'block'
+        setTimeout(() => wrong.style.display = 'none', 1000)
     }
 }
 
@@ -412,6 +420,27 @@ function forwardAction() {
         chosenClass.x += 100;
         actions -= 1;
         actionCounter.innerHTML = `Actions: ${actions}`
+
+        if(chosenClass.x === dungeonDoor.x){
+            clearInterval(arrow1Interval);
+            clearInterval(arrow3Interval);
+            clearInterval(arrow5Interval);
+
+            actionCounter.style.display = 'none';
+            equation.style.display = 'none';
+            interface.innerHTML = "Great Job! Come back later for level 2.";
+
+            app.stage.removeChild(arrowCBow1)
+            app.stage.removeChild(arrowCBow3)
+            app.stage.removeChild(arrowCBow5)
+
+            app.stage.removeChild(actOne);
+            app.stage.removeChild(actionsContainer);
+
+            app.stage.addChild(chosenClass)
+
+            gsap.to(chosenClass, {duration: 1, x: app.renderer.width / 2, y: app.renderer.height / 2, rotation: 0})
+        }
     } else {
         needMoreActions.visible = true;
         setTimeout(() => needMoreActions.visible = false, 1000)
@@ -457,6 +486,11 @@ function fireCrossbow1(){
             app.stage.addChild(chosenClass)
 
             gsap.to(chosenClass, {duration: 1, x: app.renderer.width / 2, y: app.renderer.height / 2, rotation: -1.7})
+
+            setTimeout(() => {
+                app.stage.removeChild(chosenClass)
+                app.stage.addChild(gravestone)
+            }, 2000)
         } else {
         setTimeout(() => {
             chosenClass.rotation = -1;
@@ -508,6 +542,11 @@ function fireCrossbow3(){
             app.stage.addChild(chosenClass)
 
             gsap.to(chosenClass, {duration: 1, x: app.renderer.width / 2, y: app.renderer.height / 2, rotation: -1.7})
+
+            setTimeout(() => {
+                app.stage.removeChild(chosenClass)
+                app.stage.addChild(gravestone)
+            }, 2000)
         } else {
         setTimeout(() => {
             chosenClass.rotation = -1;
@@ -558,6 +597,11 @@ function fireCrossbow5(){
             app.stage.addChild(chosenClass)
 
             gsap.to(chosenClass, {duration: 1, x: app.renderer.width / 2, y: app.renderer.height / 2, rotation: -1.7})
+
+            setTimeout(() => {
+                app.stage.removeChild(chosenClass)
+                app.stage.addChild(gravestone)
+            }, 2000)
         } else {
             setTimeout(() => {
             chosenClass.rotation = -1;
